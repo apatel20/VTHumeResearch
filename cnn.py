@@ -29,7 +29,7 @@ X_testing_data, y_testing_data = testing_data['features'], testing_data['labels'
 import cv2 #importing computer vision library to help grayscale all of the images
 
 def grayScale(image_data):
-	grayscaled = cv2.cvtColor(image_data, cv2.COLOR_RGB2GRAY)
+	grayscaled = cv2.cvtColor(image_data, cv2.COLOR_RGB2GRAY) #color conversion from RGB to grayscale
 	return grayscaled
 	
 X_training_data = np.array([grayScale(image_data) for image_data in X_training_data]) #grayscales images in training data
@@ -37,11 +37,54 @@ X_testing_data = np.array([grayScale(image_data for image_data in X_testing_data
 
 #end of preprocessing dataset
 
+#evaluating neural network model for functions, predictions, and accuracy
+
+#setting my placeholders for training/testing the network
+#will be official once Cristian finishes the network
+
+#logits = network() or the function where the network is defined
+
+#LR = tf.placeholder(tf.float32)
+saver = tf.train.Saver()#saves variables and checkpoint filenames
+
+#inference_operation
+#cross_entropy
+
+#loss_operation = tf.reduce_mean(cross_entropy)
+#training_operation = optimizer.minimize(loss_operation)
+#optimizer = tf.train.AdamOptimizer(learning_rate = LR)
+
+#correct_prediction = tf.equal(tf.argmax()
+#accuracy_operation = tf.reduce_mean(tf.cast()
+
+def evaluation(X_data, y_data):
+	number_examples = len(X_data)
+	total_accuracy = 0
+	
+	sess = tf.get_default_session()#returns default session for current
+	
+	for start in range(0, number_examples, BATCH_SIZE)
+		batch_x, batch_y = X_data[start:start+BATCH_SIZE], y_data[start:start+BATCH_SIZE] 
+		accuracy = sess.run(accuracy_operation, feed_dict = {x: batch_x, y: batch_y}, keep_prob: 1.0)
+		total_accuracy = total_accuracy + (accuracy * len(batch_x))
+	
+	return total_accuracy / number_examples
+	
 
 #beginning of training code for CNN model
 
+from sklearn.utils import shuffle#shuffling matrices consistently
+
 with tf.Session() as session:
 	session.run(tf.global_variables_initializer())
+	number_examples = len(x_training)
 	
 	print("Training the model")
-
+	
+	for epoch in range(EPOCHS):
+		X_processed, y_processed = shuffle(X_processed, y_processed)
+		for start in range(0, number_examples, BATCH_SIZE):
+			end = start + BATCH_SIZE
+			batch_x, batch_y = get_batch(X_preprocessed, y_preprocessed, start, BATCH_SIZE)
+			
+			
