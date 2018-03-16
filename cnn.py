@@ -78,7 +78,7 @@ def evaluation(X_data, y_data):
 
 #beginning of training code for CNN model
 
-from sklearn.utils import shuffle#shuffling matrices consistently
+from sklearn.utils import shuffle#shuffling matrices consistently for training
 
 with tf.Session() as session:
 	session.run(tf.global_variables_initializer())
@@ -93,5 +93,8 @@ with tf.Session() as session:
 			batch_x, batch_y = get_batch(X_preprocessed, y_preprocessed, start, BATCH_SIZE)
 			
 		print("Accuracy during Validation Process")
-		
+		#see how accurate the model is when training
+		evaluation_training_accuracy = evaluate(X_training_data, y_training_data)
+		print("EPOCH {} ..." .format(epoch+1))
 			
+	saver.save(sess, './cnnModel')
