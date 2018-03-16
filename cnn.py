@@ -37,6 +37,11 @@ X_testing_data = np.array([grayScale(image_data for image_data in X_testing_data
 
 #end of preprocessing dataset
 
+num_training = len(training_data)
+
+BATCH_SIZE = 150
+EPOCHS = num_training / 150
+
 #evaluating neural network model for functions, predictions, and accuracy
 
 #setting my placeholders for training/testing the network
@@ -55,7 +60,7 @@ saver = tf.train.Saver()#saves variables and checkpoint filenames
 #optimizer = tf.train.AdamOptimizer(learning_rate = LR)
 
 #correct_prediction = tf.equal(tf.argmax()
-#accuracy_operation = tf.reduce_mean(tf.cast()
+#accuracy_operation = tf.reduce_mean(tf.cast())
 
 def evaluation(X_data, y_data):
 	number_examples = len(X_data)
@@ -82,9 +87,11 @@ with tf.Session() as session:
 	print("Training the model")
 	
 	for epoch in range(EPOCHS):
-		X_processed, y_processed = shuffle(X_processed, y_processed)
+		X_preprocessed, y_preprocessed = shuffle(X_preprocessed, y_preprocessed) #randomizing the data for every iteration in the training data
 		for start in range(0, number_examples, BATCH_SIZE):
 			end = start + BATCH_SIZE
 			batch_x, batch_y = get_batch(X_preprocessed, y_preprocessed, start, BATCH_SIZE)
 			
+		print("Accuracy during Validation Process")
+		
 			
