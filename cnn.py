@@ -3,7 +3,7 @@ import tensorflow as tf
 import pickle
 import matplotlib
 import numpy as np
-
+from input_pipeline.py import label, feature
 #dataFile_training = "" 
 #need filepath for data
 
