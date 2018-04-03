@@ -1,4 +1,4 @@
-# GMResearch
+# VT Hume Research Project for Spring 2018
 For Research
 
 
