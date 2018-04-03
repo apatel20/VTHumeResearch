@@ -1,9 +1,12 @@
 #import libraries and dependencies
 import tensorflow as tf
 import pickle
-import matplotlib
+import matplotlib.pyplot as plt
+%matplotlib inline
 import numpy as np
+import random
 from input_pipeline.py import label, feature
+
 #dataFile_training = "" 
 #need filepath for data
 
@@ -23,6 +26,21 @@ X_training_data, y_training_data = training_data['features'], training_data['lab
 X_testing_data, y_testing_data = testing_data['features'], testing_data['labels']
 #features is an array which contains the pixel data of the images
 #labels contains information about the traffic sign such as the picture ID
+
+#exploring the data 
+number_training_samples, number_testing_samples = X_training_data.shape[0], X_testing_data.shape[0] ##extracting info from the vector
+
+#this function plots the data on a bar chart by counting the number of images for each class
+def plotting_histogram(data2plot, label):
+	images = data2plot.tolist()
+	count_per_class = [images.count(c) for c in range(NUM_CLASSES)]
+	plt.bar(range(NUM_CLASSES), count_per_class)
+	plt.xlabel(label)
+	plt.show()
+#end function
+
+plotting_histogram(y_training_data, label="Training Set Data")
+plotting_historgram(y_testing_data, label="Testing Set Data")
 
 #finished loading dataset
 
