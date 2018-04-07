@@ -3,14 +3,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import glob, csv, PIL
 from tensorflow.contrib.data import Dataset, Iterator
-NUM_CLASSES = 47
+NUM_CLASSES = 2
 IMAGE_SIZE = 28
 BATCH_SIZE = 100
 
-def f7(seq):
-    seen = set()
-    seen_add = seen.add
-    return [x for x in seq if not (x in seen or seen_add(x))]
 # Parses a list of file names and converts them into Tensors
 # @param file is a 1-D Tensor which is a list of files, and label is a 1-D Tensor representing the respective
 # class number of each file
@@ -25,7 +21,7 @@ def input_parser(file,label):
     decoded_image = tf.cast(decoded_image,tf.float32)
     grayscale_image = tf.image.rgb_to_grayscale(decoded_image)
     image_resize = tf.image.resize_image_with_crop_or_pad(grayscale_image,IMAGE_SIZE,IMAGE_SIZE)
-    return label, image_resize
+    return image_resize,label
 # Maps an input function so that it can be used in the Estimator
 # @param features is a 3-D Tensor with dim [width, height, channels], labels is a 1-D Tensor, train
 # is a boolean indicating whether training is true, and batch_size is the batch_size
@@ -50,7 +46,7 @@ def input_function(features, labels, train,batch_size):
     # Applies a batch to th` dataset and transforms each element into a 4-D Tensor with dim [batch, width, height, channels]
     dataset = dataset.batch(batch_size=batch_size)
     iterator = dataset.make_one_shot_iterator()
-    label, feature = iterator.get_next()
+    feature,label = iterator.get_next()
     # converts feature into a dict and labels into y for easier understanding
     x = {'image': feature}
     y = label
@@ -66,30 +62,31 @@ def testing_function():
 
 #creates list with file paths
 path_list = glob.glob('Data/annotations/*.png')
-#creates list of classes
-class_list = []
-for path in path_list:
-    fixedpath = path.split('_')
-    class_list.append(fixedpath[1])
-#Removes duplicates from class_list
-class_list = f7(class_list)
 #creates list of indexes
 index_list = []
 for path in path_list:
     fixedpath = path.split('_')
-    index_list.append(class_list.index(fixedpath[1])+1)
+    if(fixedpath[1] =="stop"):
+        index_list.append(0)
+    else:
+        index_list.append(1)
 
 #Splits features and labels into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(path_list, index_list, test_size=0.2, random_state=42)
+#x,y = training_function()
 print(index_list)
-
-with tf.Session() as sess:
+'''print(index_list)
+dataset = tf.data.Dataset.from_tensor_slices((path_list,index_list))
+dataset = dataset.map(input_parser)
+iterator = dataset.make_one_shot_iterator()
+nextelem = iterator.get_next()
+counter = 0'''
+'''with tf.Session() as sess:
     while True:
             try:
-                x,y = input_function(features=path_list,labels=index_list,train=True, batch_size=BATCH_SIZE)
-                elem = sess.run(x['image'])
-                assert not np.any(np.isnan(elem))
-                print("Still here")
+                elem = sess.run(y)
+                print(sess.run(tf.shape(elem)))
             except tf.errors.OutOfRangeError:
                 print("End of training dataset.")
                 break
+print(counter)'''

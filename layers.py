@@ -39,7 +39,7 @@ def model_fn(features, labels, mode, params):
     # Second fully-connected / dense layer.
     # This is the last layer so it does not use an activation function.
     net = tf.layers.dense(inputs=net, name='layer_fc_2',
-                          units=NUM_CLASSES)
+                          units=2)
 
     # Logits output of the neural network.
     logits = net
