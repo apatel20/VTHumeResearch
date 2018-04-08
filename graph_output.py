@@ -1,19 +1,22 @@
-import maplotlib.pyplot as plt
-import plotly.plotly as py
-import pandas as pd
-import numpy as np
-import csv
-import sys
+#see the output of image and its prediction from the model when going into testing
+#uses the data from the estimator api
 
-
-dataFile = pd.read_csv('categories.csv', delimiter=None)
-
-number_of_images = X_training.shape
-n_train = len(y_training_data)
-
-n_images_per_class, bins, _ = plt(y_training_data, bins=range(NUM_CLASSES+1))
-
-for i in range(0, NUM_CLASSES)
+# Predict single images
+number_images = 3
+# Get images from test set
+test_images = features[:number_images]
+# Prepare the input data
+input_fn = tf.estimator.inputs.numpy_input_fn(
+    x={'images': test_images}, shuffle=False)
 	
-	
- 
+# Use the model to predict the images class
+preds = list(model.predict(input_fn))
+
+# Display each image with its prediction
+for i in range(number_images):
+    plt.imshow(np.reshape(test_images[i], [28, 28]), cmap='gray')
+    plt.show()
+    print("What the Model Predicted: ", preds[i])
+
+
+
