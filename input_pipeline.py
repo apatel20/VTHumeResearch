@@ -5,7 +5,7 @@ import glob, csv, PIL
 from tensorflow.contrib.data import Dataset, Iterator
 NUM_CLASSES = 2
 IMAGE_SIZE = 28
-BATCH_SIZE = 100
+BATCH_SIZE = 30
 
 # Parses a list of file names and converts them into Tensors
 # @param file is a 1-D Tensor which is a list of files, and label is a 1-D Tensor representing the respective

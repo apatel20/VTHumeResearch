@@ -16,14 +16,23 @@ def model_fn(features, labels, mode, params):
 
     # First convolutional layer.
     net = tf.layers.conv2d(inputs=x, name='layer_conv1',
-                           filters=32, kernel_size=3,
+                           filters=32, kernel_size=5,
                            padding='same', activation=tf.nn.relu)
+    # saving kernel and bias. Kernel has dimension [5,5,1,32]
+    kernel = tf.get_collection(tf.GraphKeys.VARIABLES, 'layer_conv1/kernel')[0]
+    x_min = tf.reduce_min(kernel)
+    x_max = tf.reduce_max(kernel)
+    kernel_0_to_1 = (kernel - x_min) / (x_max - x_min)
+    # to tf.image_summary format [batch_size, height, width, channels]. [3,0,1,2]
+    kernel_transposed = tf.transpose(kernel_0_to_1, [3,0,1,2])
+    tf.summary.image('conv1/weights', kernel_transposed,max_outputs=32)
     net = tf.layers.max_pooling2d(inputs=net, pool_size=2, strides=2)
 
     # Second convolutional layer.
     net = tf.layers.conv2d(inputs=net, name='layer_conv2',
                            filters=32, kernel_size=3,
                            padding='same', activation=tf.nn.relu)
+
     net = tf.layers.max_pooling2d(inputs=net, pool_size=2, strides=2)
 
     # Flatten to a 2-rank tensor.
@@ -99,7 +108,12 @@ params = {"learning_rate": 1e-4}
 model = tf.estimator.Estimator(model_fn=model_fn,
                                params=params,
                                model_dir="./NeuralNet/")
-
-model.train(input_fn=training_function,steps=200)
-result = model.evaluate(input_fn=testing_function)
-print("Classification accuracy: {0:.2%}".format(result["accuracy"]))
+#def see_layer(inpu_sample,)
+with tf.Session() as sess:
+    #writer = tf.summary.FileWriter('board_beginner')  # create writer
+    #writer.add_graph(sess.graph)
+    for i in range(20):
+        model.train(input_fn=training_function,steps=100)
+        result = model.evaluate(input_fn=testing_function)
+        print("Classification accuracy: {0:.2%}".format(result["accuracy"]))
+        #writer.add_graph()
