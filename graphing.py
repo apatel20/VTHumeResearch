@@ -7,7 +7,7 @@ number_train, number_test = X_train.shape[0], X_test.shape[0]
 number_classes = np.unique(y_train).shape[0]#getting number of unique classes
 
 train_distribution, test_distribution = np.zeros(number_classes), np.zeros(number_classes)
-for class in range(nunber_classes)
+for class in range(number_classes)
 	train_distribution[class] = np.sum(y_train == class) / number_train
 	test_distribution[class] = np.sum(y_test == class) / number_test
 
